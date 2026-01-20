@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.db
+.vscode/
+ppt predstavitev/
+*.pptx
+*.jpg
+*.png
