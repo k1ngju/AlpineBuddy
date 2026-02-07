@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Optional
-from sqlalchemy import ForeignKey, Integer, Text, REAL
+from sqlalchemy import Boolean, Date, ForeignKey, Integer, Text, REAL
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -9,15 +9,26 @@ from app.database import Base
 
 
 
+class Gorovje(Base):
+    __tablename__ = 'Gorovje'
+
+    gorovje_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    naziv: Mapped[Optional[str]] = mapped_column(Text)
+    opis: Mapped[Optional[str]] = mapped_column(Text)
+
+    gore: Mapped[list['Gora']] = relationship('Gora', back_populates='gorovje')
+
+
 class Gora(Base):
     __tablename__ = 'Gora'
 
     gora_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    gorovje_id: Mapped[Optional[int]] = mapped_column(ForeignKey('Gorovje.gorovje_id'))
     ime: Mapped[Optional[str]] = mapped_column(Text)
-    gorovje: Mapped[Optional[str]] = mapped_column(Text)
     gps_sirina: Mapped[Optional[float]] = mapped_column(REAL)
     gps_dolzina: Mapped[Optional[float]] = mapped_column(REAL)
 
+    gorovje: Mapped[Optional['Gorovje']] = relationship('Gorovje', back_populates='gore')
     smeri: Mapped[list['Smer']] = relationship('Smer', back_populates='gora')
 
 
@@ -30,6 +41,16 @@ class Tezavnost(Base):
     opis: Mapped[Optional[str]] = mapped_column(Text)
 
     smeri: Mapped[list['Smer']] = relationship('Smer', back_populates='tezavnost')
+
+
+class StilSmeri(Base):
+    __tablename__ = 'StilSmeri'
+
+    stil_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    naziv: Mapped[Optional[str]] = mapped_column(Text)
+    opis: Mapped[Optional[str]] = mapped_column(Text)
+
+    smeri: Mapped[list['Smer']] = relationship('Smer', back_populates='stil')
 
 
 class Uporabnik(Base):
@@ -49,6 +70,7 @@ class Smer(Base):
     smer_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     gora_id: Mapped[Optional[int]] = mapped_column(ForeignKey('Gora.gora_id'))
     tezavnost_id: Mapped[Optional[int]] = mapped_column(ForeignKey('Tezavnost.tezavnost_id'))
+    stil_id: Mapped[Optional[int]] = mapped_column(ForeignKey('StilSmeri.stil_id'))
     ime: Mapped[Optional[str]] = mapped_column(Text)
     dolzina_m: Mapped[Optional[int]] = mapped_column(Integer)
     topo_url: Mapped[Optional[str]] = mapped_column(Text)
@@ -56,6 +78,7 @@ class Smer(Base):
 
     gora: Mapped[Optional['Gora']] = relationship('Gora', back_populates='smeri')
     tezavnost: Mapped[Optional['Tezavnost']] = relationship('Tezavnost', back_populates='smeri')
+    stil: Mapped[Optional['StilSmeri']] = relationship('StilSmeri', back_populates='smeri')
     vzponi: Mapped[list['Vzpon']] = relationship('Vzpon', back_populates='smer')
 
 
@@ -65,12 +88,12 @@ class Vzpon(Base):
     vzpon_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     uporabnik_id: Mapped[Optional[int]] = mapped_column(ForeignKey('Uporabnik.uporabnik_id'))
     smer_id: Mapped[Optional[int]] = mapped_column(ForeignKey('Smer.smer_id'))
-    datum: Mapped[Optional[str]] = mapped_column(Text)
+    datum: Mapped[Optional[Date]] = mapped_column(Date)
     slog: Mapped[Optional[str]] = mapped_column(Text)
     razmere: Mapped[Optional[str]] = mapped_column(Text)
     partnerji: Mapped[Optional[str]] = mapped_column(Text)
     opombe: Mapped[Optional[str]] = mapped_column(Text)
-    uspesen: Mapped[Optional[int]] = mapped_column(Integer)
+    uspesen: Mapped[Optional[bool]] = mapped_column(Boolean)
     cas_trajanja: Mapped[Optional[int]] = mapped_column(Integer)
 
     smer: Mapped[Optional['Smer']] = relationship('Smer', back_populates='vzponi')
