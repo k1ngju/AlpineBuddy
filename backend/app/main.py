@@ -1,14 +1,16 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.staticfiles import StaticFiles
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from typing import Optional
-
 
 from app.database import engine, Base, get_db
 from app import models
 from app import crud
 from app import schemas
+from app import auth
 
 app = FastAPI(title="AlpineBuddy API")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.on_event("startup")
 def on_startup():
@@ -17,6 +19,33 @@ def on_startup():
 @app.get("/")
 def root():
     return {"status": "backend alive"}
+
+
+@app.post("/auth/register", response_model=schemas.UporabnikRead, status_code=status.HTTP_201_CREATED)
+def register(user: schemas.UporabnikCreate, db: Session = Depends(get_db)):
+    existing = crud.get_uporabnik_by_email(db, user.email)
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    hashed = auth.get_password_hash(user.geslo)
+    return crud.create_uporabnik(db, ime=user.ime, email=user.email, geslo_hash=hashed)
+
+
+@app.post("/auth/token", response_model=schemas.Token)
+def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
+    user = auth.authenticate_user(db, form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    access_token = auth.create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.get("/auth/me", response_model=schemas.UporabnikRead)
+def read_current_user(current_user: models.Uporabnik = Depends(auth.get_current_user)):
+    return current_user
 
 
 @app.get("/gorovja", response_model=list[schemas.GorovjeRead])
@@ -78,49 +107,44 @@ def get_stil_smeri(stil_id: int, db: Session = Depends(get_db)):
 
 @app.get("/vzponi", response_model=list[schemas.VzponRead])
 def list_vzponi(
-    uporabnik_id: Optional[int] = None,
     db: Session = Depends(get_db),
+    current_user: models.Uporabnik = Depends(auth.get_current_user),
 ):
-    return crud.get_vzponi(db, uporabnik_id)
+    return crud.get_vzponi(db, current_user.uporabnik_id)
 
 
 
 @app.post("/vzponi", response_model=schemas.VzponRead)
-def create_vzpon(vzpon: schemas.VzponCreate, db: Session = Depends(get_db)):
-    return crud.create_vzpon(db, vzpon)
+def create_vzpon(
+    vzpon: schemas.VzponCreate,
+    db: Session = Depends(get_db),
+    current_user: models.Uporabnik = Depends(auth.get_current_user),
+):
+    return crud.create_vzpon(db, vzpon, current_user.uporabnik_id)
 
 
 @app.put("/vzponi/{vzpon_id}", response_model=schemas.VzponRead)
 def update_vzpon(
     vzpon_id: int,
-    vzpon: schemas.VzponBase,
+    vzpon: schemas.VzponUpdate,
     db: Session = Depends(get_db),
+    current_user: models.Uporabnik = Depends(auth.get_current_user),
 ):
-    updated = crud.update_vzpon(db, vzpon_id, vzpon)
+    updated = crud.update_vzpon(db, vzpon_id, current_user.uporabnik_id, vzpon)
     if not updated:
         raise HTTPException(status_code=404, detail="Vzpon not found")
     return updated
 
 
 @app.delete("/vzponi/{vzpon_id}")
-def delete_vzpon(vzpon_id: int, db: Session = Depends(get_db)):
-    deleted = crud.delete_vzpon(db, vzpon_id)
+def delete_vzpon(
+    vzpon_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.Uporabnik = Depends(auth.get_current_user),
+):
+    deleted = crud.delete_vzpon(db, vzpon_id, current_user.uporabnik_id)
     if not deleted:
         raise HTTPException(status_code=404, detail="Vzpon not found")
     return {"detail": "Vzpon deleted"}
-
-
-# ---------- UPORABNIKI ----------
-@app.get("/uporabniki", response_model=list[schemas.UporabnikRead])
-def list_uporabniki(db: Session = Depends(get_db)):
-    return crud.get_uporabniki(db)
-
-
-@app.get("/uporabniki/{uporabnik_id}", response_model=schemas.UporabnikRead)
-def get_uporabnik(uporabnik_id: int, db: Session = Depends(get_db)):
-    uporabnik = crud.get_uporabnik(db, uporabnik_id)
-    if not uporabnik:
-        raise HTTPException(status_code=404, detail="Uporabnik not found")
-    return uporabnik
 
 

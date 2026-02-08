@@ -40,27 +40,31 @@ def get_stil_smeri(db: Session, stil_id: int) -> models.StilSmeri | None:
 def get_vzpon(db, vzpon_id: int):
     return db.query(models.Vzpon).filter(models.Vzpon.vzpon_id == vzpon_id).first()
 
-
-def get_vzponi(db, uporabnik_id: int | None = None):
-    query = db.query(models.Vzpon)
-
-    if uporabnik_id is not None:
-        query = query.filter(models.Vzpon.uporabnik_id == uporabnik_id)
-
-    return query.all()
+def get_vzponi(db, uporabnik_id: int):
+    return db.query(models.Vzpon).filter(models.Vzpon.uporabnik_id == uporabnik_id).all()
 
 
+def get_vzpon_for_user(db, vzpon_id: int, uporabnik_id: int):
+    return (
+        db.query(models.Vzpon)
+        .filter(
+            models.Vzpon.vzpon_id == vzpon_id,
+            models.Vzpon.uporabnik_id == uporabnik_id,
+        )
+        .first()
+    )
 
-def create_vzpon(db, vzpon):
-    db_vzpon = models.Vzpon(**vzpon.dict())
+
+def create_vzpon(db, vzpon, uporabnik_id: int):
+    db_vzpon = models.Vzpon(**vzpon.dict(), uporabnik_id=uporabnik_id)
     db.add(db_vzpon)
     db.commit()
     db.refresh(db_vzpon)
     return db_vzpon
 
 
-def update_vzpon(db, vzpon_id: int, vzpon):
-    db_vzpon = get_vzpon(db, vzpon_id)
+def update_vzpon(db, vzpon_id: int, uporabnik_id: int, vzpon):
+    db_vzpon = get_vzpon_for_user(db, vzpon_id, uporabnik_id)
     if not db_vzpon:
         return None
 
@@ -72,8 +76,8 @@ def update_vzpon(db, vzpon_id: int, vzpon):
     return db_vzpon
 
 
-def delete_vzpon(db, vzpon_id: int):
-    db_vzpon = get_vzpon(db, vzpon_id)
+def delete_vzpon(db, vzpon_id: int, uporabnik_id: int):
+    db_vzpon = get_vzpon_for_user(db, vzpon_id, uporabnik_id)
     if not db_vzpon:
         return None
 
@@ -91,3 +95,15 @@ def get_uporabnik(db, uporabnik_id: int):
     return db.query(models.Uporabnik).filter(
         models.Uporabnik.uporabnik_id == uporabnik_id
     ).first()
+
+
+def get_uporabnik_by_email(db, email: str):
+    return db.query(models.Uporabnik).filter(models.Uporabnik.email == email).first()
+
+
+def create_uporabnik(db, ime: str, email: str, geslo_hash: str):
+    db_uporabnik = models.Uporabnik(ime=ime, email=email, geslo=geslo_hash)
+    db.add(db_uporabnik)
+    db.commit()
+    db.refresh(db_uporabnik)
+    return db_uporabnik
