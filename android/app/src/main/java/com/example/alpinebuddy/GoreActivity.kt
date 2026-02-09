@@ -1,5 +1,6 @@
 package com.example.alpinebuddy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -43,8 +44,12 @@ class GoreActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         goraAdapter = GoraAdapter(emptyList()) { gora ->
-            // TODO: Odpri nov Activity s podrobnostmi o smeri
-            Log.d("GoreActivity", "Kliknjena gora: ${gora.naziv}")
+            val intent = Intent(this, SmeriActivity::class.java).apply {
+                putExtra(SmeriActivity.EXTRA_GORA_ID, gora.goraId)
+                putExtra(SmeriActivity.EXTRA_GORA_NAZIV, gora.naziv)
+                putExtra(SmeriActivity.EXTRA_GORA_SLIKA_URL, gora.slikaUrl)
+            }
+            startActivity(intent)
         }
 
         binding.rvGore.apply {

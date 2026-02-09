@@ -30,3 +30,30 @@ data class GoraRead(
     @SerializedName("slika_url") val slikaUrl: String?,
     @SerializedName("gorovje_id") val gorovjeId: Int
 )
+
+// Podatki o smeri glede na schemas.py -> SmerRead
+data class SmerRead(
+    @SerializedName("smer_id") val smerId: Int,
+    @SerializedName("gora_id") val goraId: Int,
+    @SerializedName("tezavnost_id") val tezavnostId: Int?,
+    @SerializedName("stil_id") val stilId: Int?,
+    val ime: String?,
+    @SerializedName("dolzina_m") val dolzina: Int?,
+    val opis: String?,
+    @SerializedName("skica_url_1") val skicaUrl1: String?,
+    @SerializedName("skica_url_2") val skicaUrl2: String?
+)
+
+// Podatki o težavnosti smeri glede na schemas.py -> TezavnostRead
+data class TezavnostRead(
+    @SerializedName("tezavnost_id") val tezavnostId: Int,
+    val oznaka: String,
+    val sistem: String?
+)
+
+// Podatki o stilu smeri glede na schemas.py -> StilSmeriRead
+data class StilSmeriRead(
+    @SerializedName("stil_id") val stilId: Int,
+    val naziv: String,
+    val opis: String?
+)

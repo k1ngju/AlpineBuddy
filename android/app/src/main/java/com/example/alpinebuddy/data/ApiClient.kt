@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
 // Vmesnik, ki definira API končne točke
@@ -13,6 +14,24 @@ interface ApiService {
 
     @GET("/gore")
     suspend fun getGore(): List<GoraRead>
+
+    @GET("/smeri")
+    suspend fun getSmeri(): List<SmerRead>
+
+    @GET("/smeri/{id}")
+    suspend fun getSmer(@Path("id") id: Int): SmerRead
+
+    @GET("/tezavnosti")
+    suspend fun getTezavnosti(): List<TezavnostRead>
+
+    @GET("/tezavnosti/{id}")
+    suspend fun getTezavnost(@Path("id") id: Int): TezavnostRead
+
+    @GET("/stili-smeri")
+    suspend fun getStiliSmeri(): List<StilSmeriRead>
+
+    @GET("/stili-smeri/{id}")
+    suspend fun getStilSmeri(@Path("id") id: Int): StilSmeriRead
 }
 
 object ApiClient {

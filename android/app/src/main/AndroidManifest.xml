@@ -31,6 +31,11 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
+        <activity
+            android:name=".SmeriActivity"
+            android:exported="false"
+            android:parentActivityName=".GoreActivity" />
+
     </application>
 
 </manifest>
