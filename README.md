@@ -1,14 +1,12 @@
 # AlpineBuddy
 
+Pregledni katalog alpinisticnih smeri in dnevnik alpinsticnih vzponov. Projekt uporablja REST API z dvema odjemalcema: spletna aplikacija in mobilna Android aplikacija.
 
-Pregledni katalog alpinističnih smeri in dnevnik alpističnih vzponov. Projekt uporablja REST API z dvema odjemalcema: Spletna aplikacija
-in mobilna Android aplikacija
-
-## Architecture
-- Clients: web app and Android app.
-- Backend: FastAPI + SQLAlchemy.
-- Database: SQLite (local file created on startup).
-- Communication: REST API over HTTP.
+## Arhitektura
+- Odjemalci: spletna aplikacija in Android aplikacija.
+- Zaledje: FastAPI + SQLAlchemy.
+- Podatkovna baza: SQLite (lokalna datoteka, ustvari se ob zagonu).
+- Komunikacija: REST API prek HTTP.
 
 ```
 Web / Android
@@ -20,55 +18,29 @@ FastAPI (REST)
 SQLite
 ```
 
-## Data Model
-Reference data is read-only through the API. Users can only create and manage ascents.
+## Shema podatkov
 
-Entities and relations:
-- Gorovje (mountain range)
-	- gorovje_id, naziv, opis
-	- 1 -> N to Gora
-- Gora (mountain)
-	- gora_id, gorovje_id, ime, slika_url, gps_sirina, gps_dolzina
-	- N -> 1 to Gorovje
-	- 1 -> N to Smer
-- Tezavnost (grade)
-	- tezavnost_id, oznaka, sistem, opis
-	- 1 -> N to Smer
-- StilSmeri (route style)
-	- stil_id, naziv, opis
-	- 1 -> N to Smer
-- Smer (route)
-	- smer_id, gora_id, tezavnost_id, stil_id, ime, dolzina_m, opis, skica_url_1, skica_url_2
-	- N -> 1 to Gora, Tezavnost, StilSmeri
-	- 1 -> N to Vzpon
-- Uporabnik (user)
-	- uporabnik_id, ime, email, geslo
-	- 1 -> N to Vzpon
-- Vzpon (ascent)
-	- vzpon_id, uporabnik_id, smer_id, datum, slog, razmere, partnerji, opombe, uspesen, cas_trajanja
-	- N -> 1 to Uporabnik, Smer
-	- datum is a date; uspesen is boolean; cas_trajanja is in hours
-- geslo is stored as a hash
+![Shema podatkovne baze](static/shema.png)
 
-## API Documentation
-Base URL: `http://127.0.0.1:8000`
+## API dokumentacija
+Osnovni URL: `http://127.0.0.1:8000`
 
 ### Health
 - GET `/` -> status check
 
-### Gorovja (read-only)
+### Gorovja
 - GET `/gorovja`
 - GET `/gorovja/{gorovje_id}`
 
-### Gore (read-only)
+### Gore 
 - GET `/gore`
 - GET `/gore/{gora_id}`
 
-### Smeri (read-only)
+### Smeri 
 - GET `/smeri`
 - GET `/smeri/{smer_id}`
 
-### Stili smeri (read-only)
+### Stili smeri 
 - GET `/stili-smeri`
 - GET `/stili-smeri/{stil_id}`
 
@@ -77,67 +49,64 @@ Base URL: `http://127.0.0.1:8000`
 - POST `/auth/token`
 - GET `/auth/me`
 
-### Vzponi (user data)
+### Vzponi (uporabniski podatki)
 - GET `/vzponi`
 - POST `/vzponi`
 - PUT `/vzponi/{vzpon_id}`
 - DELETE `/vzponi/{vzpon_id}`
 
-## Running the Backend
-1) Create and activate a virtual environment
-2) Install dependencies
+## Zagon zaledja
+1) Ustvari in aktiviraj virtualno okolje
+2) Namesti odvisnosti
 ```
 python -m pip install -r requirements.txt
 ```
 
-3) Start the API
+3) Zazeni API
 ```
 cd backend
 python -m uvicorn app.main:app --reload
 ```
 
-The SQLite database file `alpinebuddy.db` is created on startup in the `backend` folder.
+SQLite datoteka `alpinebuddy.db` se ustvari ob zagonu v mapi `backend`.
 
-### Local images (static)
-For a proof-of-concept, store images locally and expose them via `/static`.
+### Lokalne slike (static)
+Za proof-of-concept se slike shranijo lokalno in izpostavijo prek `/static`.
 
-- Put mountain images in `backend/static/gore/`
-- Put route sketches in `backend/static/smeri/`
-- Store URLs in the DB, for example:
+- Slike gora shrani v `backend/static/gore/`
+- Skice smeri shrani v `backend/static/smeri/`
+- URL-je shrani v bazo, na primer:
 	- `/static/gore/triglav.jpg`
 	- `/static/smeri/slovenska-1.jpg`
 	- `/static/smeri/slovenska-2.jpg`
 
-### Seed reference data
-Example seed script (gorovja, tezavnosti, stili):
+### Seed referencnih podatkov
+Primer seed skripte (gorovja, tezavnosti, stili):
 ```
 python backend/scripts/seed.py
 ```
 
-### Secret key config
-Set the JWT secret via environment variable before starting the API:
+### Konfiguracija skrivnega kljuca
+JWT skrivni kljuc nastavi prek okoljske spremenljivke pred zagonom API:
 
 PowerShell:
 ```
 $env:ALPINEBUDDY_SECRET_KEY = "change-this-in-dev"
 ```
 
-### Auth flow check (example)
-1) Register
+### Preverjanje auth toka s curl
+1) Registracija
 ```
 curl -X POST http://127.0.0.1:8000/auth/register -H "Content-Type: application/json" -d '{"ime":"Test User","email":"test@example.com","geslo":"strongpass123"}'
 ```
 
-2) Login (token)
+2) Prijava (token)
 ```
 curl -X POST http://127.0.0.1:8000/auth/token -H "Content-Type: application/x-www-form-urlencoded" -d "username=test@example.com&password=strongpass123"
 ```
 
-3) Access protected endpoint
+3) Dostop do zascitenega endpointa
 ```
 curl -H "Authorization: Bearer <TOKEN>" http://127.0.0.1:8000/vzponi
 ```
 
-## Notes
-- Reference data (gorovja, gore, smeri, tezavnosti, stili) is managed outside the public API.
-- JWT authentication is required for all Vzpon endpoints.

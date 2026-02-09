@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 from app import crud, models
 from app.database import get_db
 
-SECRET_KEY = os.getenv("ALPINEBUDDY_SECRET_KEY", "change-me")
+SECRET_KEY = os.getenv("ALPINEBUDDY_SECRET_KEY", "skrivni-kljuc-za-jwt-token")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
