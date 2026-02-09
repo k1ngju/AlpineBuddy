@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.etPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Vnesi email in geslo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_empty_fields), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -43,20 +43,20 @@ class LoginActivity : AppCompatActivity() {
 
                     if (tokenResponse != null) {
                         sessionManager.saveAuthToken(tokenResponse.accessToken)
-                        Toast.makeText(this, "Prijava uspešna!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                         
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, error ?: "Napaka pri prijavi", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, error ?: getString(R.string.error_empty_fields), Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
 
         binding.tvRegister.setOnClickListener {
-            Toast.makeText(this, "Registracija še ni implementirana", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.registration_not_implemented), Toast.LENGTH_SHORT).show()
         }
     }
 }

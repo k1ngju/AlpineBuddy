@@ -2,9 +2,13 @@ package com.example.alpinebuddy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.alpinebuddy.data.ApiClient
 import com.example.alpinebuddy.data.SessionManager
 import com.example.alpinebuddy.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +32,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvWelcome.text = "Pozdravljen v AlpineBuddy!"
+        binding.tvWelcome.text = getString(R.string.welcome_message)
+
+        // Kličemo API za pridobitev gorovij
+        fetchGorovja()
+    }
+
+    private fun fetchGorovja() {
+        lifecycleScope.launch {
+            try {
+                val gorovja = ApiClient.apiService.getGorovja()
+                // Zaenkrat samo izpišemo v Logcat
+                Log.d("MainActivity", "Uspešno pridobljeni podatki: $gorovja")
+                // TODO: Prikaz podatkov v RecyclerView
+            } catch (e: Exception) {
+                // V primeru napake izpišemo error
+                Log.e("MainActivity", "Napaka pri pridobivanju podatkov: ", e)
+            }
+        }
     }
 }
