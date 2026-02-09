@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -10,6 +11,13 @@ from app import schemas
 from app import auth
 
 app = FastAPI(title="AlpineBuddy API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.on_event("startup")
@@ -99,6 +107,19 @@ def get_stil_smeri(stil_id: int, db: Session = Depends(get_db)):
     if not stil:
         raise HTTPException(status_code=404, detail="Stil smeri not found")
     return stil
+
+
+@app.get("/tezavnosti", response_model=list[schemas.TezavnostRead])
+def list_tezavnosti(db: Session = Depends(get_db)):
+    return crud.get_tezavnosti(db)
+
+
+@app.get("/tezavnosti/{tezavnost_id}", response_model=schemas.TezavnostRead)
+def get_tezavnost(tezavnost_id: int, db: Session = Depends(get_db)):
+    tezavnost = crud.get_tezavnost(db, tezavnost_id)
+    if not tezavnost:
+        raise HTTPException(status_code=404, detail="Tezavnost not found")
+    return tezavnost
 
 
 

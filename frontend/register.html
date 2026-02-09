@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AlpineBuddy | Registracija</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand brand" href="index.html">AlpineBuddy</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="container">
+        <div class="row g-4 align-items-stretch">
+          <div class="col-lg-6">
+            <div class="hero-card fade-up">
+              <h1 class="brand">Ustvari racun</h1>
+              <p class="small-muted">Registriraj se in zacni zapisovati vzpone.</p>
+              <form id="registerForm" class="mt-4">
+                <div class="mb-3">
+                  <label class="form-label">Ime</label>
+                  <input id="regName" class="form-control" type="text" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">E-naslov</label>
+                  <input id="regEmail" class="form-control" type="email" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Geslo</label>
+                  <input id="regPass" class="form-control" type="password" minlength="8" required />
+                </div>
+                <button class="btn btn-accent w-100" type="submit">Registracija</button>
+              </form>
+              <p id="authMsg" class="mt-3 text-danger"></p>
+              <p class="mt-3 small-muted">
+                Ze imas racun? <a href="index.html">Prijava</a>.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="hero-card fade-up">
+              <h2 class="brand">AlpineBuddy</h2>
+              <ul class="small-muted mt-3">
+                <li>AlpineBuddy je spletni alpinisticni vodnik.</li>
+                <li>Osebni dnevnik vzponov na enem mestu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/auth.js"></script>
+  </body>
+</html>

@@ -36,6 +36,15 @@ def get_stil_smeri(db: Session, stil_id: int) -> models.StilSmeri | None:
     return db.query(models.StilSmeri).filter(models.StilSmeri.stil_id == stil_id).first()
 
 
+# ---------- TEZAVNOST ----------
+def get_tezavnosti(db: Session) -> list[models.Tezavnost]:
+    return db.query(models.Tezavnost).order_by(models.Tezavnost.oznaka).all()
+
+
+def get_tezavnost(db: Session, tezavnost_id: int) -> models.Tezavnost | None:
+    return db.query(models.Tezavnost).filter(models.Tezavnost.tezavnost_id == tezavnost_id).first()
+
+
 # ---------- VZPON ----------
 def get_vzpon(db, vzpon_id: int):
     return db.query(models.Vzpon).filter(models.Vzpon.vzpon_id == vzpon_id).first()
