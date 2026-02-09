@@ -5,24 +5,25 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alpinebuddy.data.ApiClient
 import com.example.alpinebuddy.data.SessionManager
 import com.example.alpinebuddy.databinding.ActivityMainBinding
+import com.example.alpinebuddy.ui.adapters.GorovjeAdapter
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sessionManager: SessionManager
+    private lateinit var gorovjeAdapter: GorovjeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sessionManager = SessionManager(this)
 
-        // Preveri, če je uporabnik prijavljen (če ima žeton)
         if (sessionManager.fetchAuthToken() == null) {
-            // Če nima žetona, pojdi na LoginActivity
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -32,21 +33,32 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvWelcome.text = getString(R.string.welcome_message)
-
-        // Kličemo API za pridobitev gorovij
+        setupRecyclerView()
         fetchGorovja()
+    }
+
+    private fun setupRecyclerView() {
+        gorovjeAdapter = GorovjeAdapter(emptyList()) { gorovje ->
+            // TODO: Odpri nov Activity s seznamom gora za izbrano gorovje
+            Log.d("MainActivity", "Kliknjeno gorovje: ${gorovje.naziv}")
+        }
+
+        binding.rvGorovja.apply {
+            adapter = gorovjeAdapter
+            layoutManager = LinearLayoutManager(this@MainActivity)
+        }
     }
 
     private fun fetchGorovja() {
         lifecycleScope.launch {
             try {
                 val gorovja = ApiClient.apiService.getGorovja()
-                // Zaenkrat samo izpišemo v Logcat
                 Log.d("MainActivity", "Uspešno pridobljeni podatki: $gorovja")
-                // TODO: Prikaz podatkov v RecyclerView
+                // Posodobi podatke v adapterju
+                runOnUiThread {
+                    gorovjeAdapter.updateData(gorovja)
+                }
             } catch (e: Exception) {
-                // V primeru napake izpišemo error
                 Log.e("MainActivity", "Napaka pri pridobivanju podatkov: ", e)
             }
         }
