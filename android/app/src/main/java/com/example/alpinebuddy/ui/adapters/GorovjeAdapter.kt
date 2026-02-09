@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.alpinebuddy.R
 import com.example.alpinebuddy.data.GorovjeRead
 
@@ -41,8 +42,17 @@ class GorovjeAdapter(
 
         fun bind(gorovje: GorovjeRead) {
             nazivTextView.text = gorovje.naziv
-            // Tukaj bomo kasneje dodali nalaganje slik
-            // imageView.setImageResource(...)
+
+            if (!gorovje.slikaUrl.isNullOrEmpty()) {
+                imageView.load(gorovje.slikaUrl) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_launcher_background) // Placeholder, če se slika nalaga
+                    error(R.drawable.ic_launcher_foreground) // Slika v primeru napake
+                }
+            } else {
+                // Nastavi privzeto sliko, če URL-ja ni
+                imageView.setImageResource(R.drawable.ic_launcher_background)
+            }
         }
     }
 }

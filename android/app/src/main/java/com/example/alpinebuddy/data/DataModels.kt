@@ -19,5 +19,14 @@ data class UporabnikRead(
 data class GorovjeRead(
     @SerializedName("gorovje_id") val gorovjeId: Int,
     val naziv: String?,
-    val opis: String?
+    val opis: String?,
+    @SerializedName("slika_url") val slikaUrl: String?
+)
+
+// Podatki o gori glede na schemas.py -> GoraRead
+data class GoraRead(
+    @SerializedName("gora_id") val goraId: Int,
+    @SerializedName("ime") val naziv: String,
+    @SerializedName("slika_url") val slikaUrl: String?,
+    @SerializedName("gorovje_id") val gorovjeId: Int
 )

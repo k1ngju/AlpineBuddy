@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit
 interface ApiService {
     @GET("/gorovja")
     suspend fun getGorovja(): List<GorovjeRead>
+
+    @GET("/gore")
+    suspend fun getGore(): List<GoraRead>
 }
 
 object ApiClient {

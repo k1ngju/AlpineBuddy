@@ -39,8 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         gorovjeAdapter = GorovjeAdapter(emptyList()) { gorovje ->
-            // TODO: Odpri nov Activity s seznamom gora za izbrano gorovje
-            Log.d("MainActivity", "Kliknjeno gorovje: ${gorovje.naziv}")
+            val intent = Intent(this, GoreActivity::class.java).apply {
+                putExtra(GoreActivity.EXTRA_GOROVJE_ID, gorovje.gorovjeId)
+                putExtra(GoreActivity.EXTRA_GOROVJE_NAZIV, gorovje.naziv)
+            }
+            startActivity(intent)
         }
 
         binding.rvGorovja.apply {
@@ -54,7 +57,6 @@ class MainActivity : AppCompatActivity() {
             try {
                 val gorovja = ApiClient.apiService.getGorovja()
                 Log.d("MainActivity", "Uspešno pridobljeni podatki: $gorovja")
-                // Posodobi podatke v adapterju
                 runOnUiThread {
                     gorovjeAdapter.updateData(gorovja)
                 }
