@@ -14,11 +14,11 @@ function renderGore(gorovjeId) {
     const img = g.slika_url ? `<img class="img-frame" src="${API_BASE}${g.slika_url}" alt="${g.ime}">` : "";
     return `
       <div class="col-md-6 col-lg-4">
-        <div class="card h-100 p-3">
+        <div class="card h-100 p-3 mountain-card">
           ${img}
           <h5 class="mt-3 text-center">${g.ime}</h5>
           <p class="small-muted text-center">${g.gps_sirina ?? ""} ${g.gps_dolzina ?? ""}</p>
-          <a class="btn btn-outline-dark" href="gora.html?id=${g.gora_id}">Odpri</a>
+          <a class="btn btn-outline-dark mt-auto" href="gora.html?id=${g.gora_id}">Odpri</a>
         </div>
       </div>
     `;

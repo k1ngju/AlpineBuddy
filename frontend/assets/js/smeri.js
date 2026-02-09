@@ -13,7 +13,7 @@ async function loadGora() {
     const tezMap = new Map(tezavnosti.map((t) => [t.tezavnost_id, t.oznaka]));
     const stilMap = new Map(stili.map((s) => [s.stil_id, s.naziv]));
 
-    const goreImg = gora.slika_url ? `<img class="img-frame" src="${API_BASE}${gora.slika_url}" alt="${gora.ime}">` : "";
+    const goreImg = gora.slika_url ? `<img class="img-frame gora-hero-img" src="${API_BASE}${gora.slika_url}" alt="${gora.ime}">` : "";
     header.innerHTML = `
       <div class="col-lg-5">
         ${goreImg}
@@ -28,7 +28,7 @@ async function loadGora() {
 
     smeriWrap.innerHTML = filtered.map((s) => `
       <div class="col-md-6">
-        <div class="card p-3 h-100">
+        <div class="card p-3 h-100 smer-card">
           <h5>${s.ime}</h5>
           <p class="small-muted">Dolzina: ${s.dolzina_m ?? ""} m</p>
           <p class="small-muted">Tezavnost: ${tezMap.get(s.tezavnost_id) ?? ""}</p>

@@ -136,10 +136,129 @@ body {
   object-fit: cover;
 }
 
+.mountain-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.mountain-card .img-frame {
+  height: 250px;
+}
+
+.gora-hero-img {
+  height: 360px;
+  object-fit: cover;
+}
+
+.sketch-img {
+  height: 400px;
+  object-fit: contain;
+  background: #fff;
+  cursor: zoom-in;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1.5rem;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+.lightbox-inner {
+  position: relative;
+  max-width: 92vw;
+  max-height: 92vh;
+}
+
+.lightbox-inner img {
+  max-width: 92vw;
+  max-height: 92vh;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  background: #fff;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #222;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
 
 .small-muted {
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.smer-meta {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  min-height: 140px;
+}
+
+.smer-meta .small-muted {
+  margin-bottom: 0.5rem;
+}
+
+.smer-meta .small-muted:last-child {
+  margin-bottom: 0;
+}
+
+.smer-opis-title {
+  font-family: "Fraunces", "Times New Roman", serif;
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+}
+
+.smer-opis p {
+  line-height: 1.6;
+  margin-bottom: 0.9rem;
+}
+
+.smer-opis p:last-child {
+  margin-bottom: 0;
+}
+
+.smer-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+.smer-card .btn {
+  margin-top: auto;
+}
+
+@media (min-width: 992px) {
+  .smer-opis {
+    border-left: 2px solid rgba(224, 122, 95, 0.35);
+    padding-left: 1.5rem;
+  }
 }
 
 .table thead th {
