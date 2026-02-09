@@ -1,4 +1,4 @@
-<img width="796" height="419" alt="image" src="https://github.com/user-attachments/assets/7afcb23b-19a7-4969-844b-d8a3d0709653" /># AlpineBuddy
+# AlpineBuddy
 
 Pregledni katalog alpinisticnih smeri in dnevnik alpinsticnih vzponov. Projekt uporablja REST API z dvema odjemalcema: spletna aplikacija in mobilna Android aplikacija.
 
