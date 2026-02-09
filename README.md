@@ -1,4 +1,4 @@
-# AlpineBuddy
+<img width="796" height="419" alt="image" src="https://github.com/user-attachments/assets/7afcb23b-19a7-4969-844b-d8a3d0709653" /># AlpineBuddy
 
 Pregledni katalog alpinisticnih smeri in dnevnik alpinsticnih vzponov. Projekt uporablja REST API z dvema odjemalcema: spletna aplikacija in mobilna Android aplikacija.
 
@@ -20,7 +20,8 @@ SQLite
 
 ## Shema podatkov
 
-![Shema podatkovne baze](static/shema.png)
+<img width="796" height="419" alt="image" src="https://github.com/user-attachments/assets/49988276-5cd6-4858-a118-9d2c108c12a5" />
+
 
 ## API dokumentacija
 Osnovni URL: `http://127.0.0.1:8000`
