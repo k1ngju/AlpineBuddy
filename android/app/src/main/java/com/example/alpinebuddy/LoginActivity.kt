@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.alpinebuddy.data.AuthService
 import com.example.alpinebuddy.data.SessionManager
+import com.example.alpinebuddy.data.TokenResponse
 import com.example.alpinebuddy.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -32,26 +33,22 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Pokaži progress bar in onemogoči gumb
             binding.progressBar.visibility = View.VISIBLE
             binding.btnLogin.isEnabled = false
 
-            authService.login(email, password) { tokenResponse, error ->
+            authService.login(email, password) { tokenResponse: TokenResponse?, error: String? ->
                 runOnUiThread {
                     binding.progressBar.visibility = View.GONE
                     binding.btnLogin.isEnabled = true
 
                     if (tokenResponse != null) {
-                        // Prijava uspešna!
-                        sessionManager.saveAuthToken(tokenResponse.access_token)
+                        sessionManager.saveAuthToken(tokenResponse.accessToken)
                         Toast.makeText(this, "Prijava uspešna!", Toast.LENGTH_SHORT).show()
                         
-                        // Pojdi na MainActivity
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
-                        finish() // Zapri LoginActivity
+                        finish()
                     } else {
-                        // Prijava neuspešna
                         Toast.makeText(this, error ?: "Napaka pri prijavi", Toast.LENGTH_LONG).show()
                     }
                 }
@@ -59,7 +56,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.tvRegister.setOnClickListener {
-            // Tukaj bi kasneje dodali RegisterActivity
             Toast.makeText(this, "Registracija še ni implementirana", Toast.LENGTH_SHORT).show()
         }
     }

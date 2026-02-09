@@ -21,11 +21,10 @@ class MainActivity : AppCompatActivity() {
             // Če nima žetona, pojdi na LoginActivity
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish() // Zapri MainActivity
+            finish()
             return
         }
 
-        // Če je prijavljen, nastavi ViewBinding za glavno okno
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
