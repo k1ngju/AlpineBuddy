@@ -9,13 +9,13 @@ Pregledni katalog alpinisticnih smeri in dnevnik alpinsticnih vzponov. Projekt u
 - Komunikacija: REST API prek HTTP.
 
 ```
-Web / Android
+	Web / Android
 		|
 		v
-FastAPI (REST)
+	FastAPI (REST)
 		|
 		v
-SQLite
+	 SQLite
 ```
 
 ## Shema podatkov
@@ -25,6 +25,7 @@ SQLite
 
 ## API dokumentacija
 Osnovni URL: `http://127.0.0.1:8000`
+Docs:  `http://127.0.0.1:8000/docs`
 
 ### Health
 - GET `/` -> status check
@@ -57,7 +58,7 @@ Osnovni URL: `http://127.0.0.1:8000`
 - DELETE `/vzponi/{vzpon_id}`
 
 ## Zagon zaledja
-1) Ustvari in aktiviraj virtualno okolje
+1) Ustvari in aktiviraj okolje
 2) Namesti odvisnosti
 ```
 python -m pip install -r requirements.txt
@@ -70,6 +71,19 @@ python -m uvicorn app.main:app --reload
 ```
 
 SQLite datoteka `alpinebuddy.db` se ustvari ob zagonu v mapi `backend`.
+
+## Zagon frontenda spletne aplikacije
+Frontend je staticen (HTML/CSS/JS), zato ga lahko serviramo z enostavnim HTTP streznikom.
+
+```
+cd frontend
+python -m http.server 5500
+```
+
+Odpri: http://127.0.0.1:5500/index.html
+
+### Frontend konfiguracija (API base URL)
+Ce zaledje ne tece na privzetem URL-ju, popravi `API_BASE` v `frontend/assets/js/app.js`.
 
 ### Lokalne slike (static)
 Za proof-of-concept se slike shranijo lokalno in izpostavijo prek `/static`.
