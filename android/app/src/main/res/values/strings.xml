@@ -5,7 +5,8 @@
     <string name="email_hint">Email</string>
     <string name="password_hint">Geslo</string>
     <string name="login_button">Prijava</string>
-    <string name="register_prompt">Nimaš računa? Registriraj se</string>
+    <string name="register_prompt">Nimaš računa?</string>
+    <string name="register_button_text">Registriraj se</string>
     <string name="error_empty_fields">Vnesi email in geslo</string>
     <string name="login_success">Prijava uspešna!</string>
     <string name="registration_not_implemented">Registracija še ni implementirana</string>

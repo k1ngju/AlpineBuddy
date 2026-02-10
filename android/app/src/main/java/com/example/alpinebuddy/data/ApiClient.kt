@@ -1,14 +1,20 @@
 package com.example.alpinebuddy.data
 
 import okhttp3.OkHttpClient
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
 // Vmesnik, ki definira API končne točke
 interface ApiService {
+    @POST("/auth/register") // Pravi URL za registracijo
+    suspend fun registerUser(@Body userData: UserRegistration): Response<UporabnikRead>
+
     @GET("/gorovja")
     suspend fun getGorovja(): List<GorovjeRead>
 

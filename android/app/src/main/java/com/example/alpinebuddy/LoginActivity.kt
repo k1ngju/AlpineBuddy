@@ -55,8 +55,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.tvRegister.setOnClickListener {
-            Toast.makeText(this, getString(R.string.registration_not_implemented), Toast.LENGTH_SHORT).show()
+        binding.btnGoToRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 }

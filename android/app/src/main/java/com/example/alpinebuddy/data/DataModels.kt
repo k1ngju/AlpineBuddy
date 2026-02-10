@@ -15,6 +15,13 @@ data class UporabnikRead(
     val email: String
 )
 
+// Podatki za registracijo uporabnika
+data class UserRegistration(
+    val ime: String,
+    val email: String,
+    val geslo: String
+)
+
 // Podatki o gorovju glede na schemas.py -> GorovjeRead
 data class GorovjeRead(
     @SerializedName("gorovje_id") val gorovjeId: Int,

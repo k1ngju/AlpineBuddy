@@ -40,10 +40,20 @@ class SmeriActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.collapsingToolbar.title = goraNaziv ?: "Smeri"
-        binding.ivGoraHeader.load(goraSlikaUrl) {
-            crossfade(true)
-            placeholder(R.drawable.ic_launcher_background)
+
+        // --- IMAGE LOADING FIX ---
+        if (!goraSlikaUrl.isNullOrEmpty()) {
+            val fullImageUrl = ApiClient.BASE_URL + goraSlikaUrl
+            binding.ivGoraHeader.load(fullImageUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_launcher_background)
+                error(R.drawable.ic_launcher_foreground) // Error placeholder
+            }
+        } else {
+            // Če slika nima URL-ja, lahko nastavimo privzeto barvo ali sliko
+             binding.ivGoraHeader.setImageResource(R.drawable.ic_launcher_background)
         }
+
 
         setupRecyclerView()
 
