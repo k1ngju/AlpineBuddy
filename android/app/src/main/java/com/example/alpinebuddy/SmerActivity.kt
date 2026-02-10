@@ -76,10 +76,15 @@ class SmerActivity : AppCompatActivity() {
 
         smerDolzina.text = smer.dolzina?.let {
             getString(R.string.length_label_format, it)
-        } ?: getString(R.string.length_label_format, getString(R.string.unknown))
+        } ?: getString(R.string.length_label_unavailable)
 
-        smerTezavnost.text = getString(R.string.difficulty_label_format, tezavnost?.oznaka ?: getString(R.string.unknown))
-        smerStil.text = getString(R.string.style_label_format, stil?.naziv ?: getString(R.string.unknown))
+        smerTezavnost.text = tezavnost?.oznaka?.let {
+            getString(R.string.difficulty_label_format, it)
+        } ?: getString(R.string.difficulty_label_unavailable)
+
+        smerStil.text = stil?.naziv?.let {
+            getString(R.string.style_label_format, it)
+        } ?: getString(R.string.style_label_unavailable)
 
         smer.opis?.let {
             smerOpis.text = it.replace("\\n", "\n")

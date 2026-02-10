@@ -40,17 +40,15 @@ class SmerAdapter(
 
             binding.tvSmerDolzina.text = smer.dolzina?.let {
                 context.getString(R.string.length_label_format, it)
-            } ?: context.getString(R.string.length_label_format, context.getString(R.string.not_available))
+            } ?: context.getString(R.string.length_label_unavailable)
 
-            binding.tvSmerTezavnost.text = context.getString(
-                R.string.difficulty_label_format,
-                smer.tezavnost ?: context.getString(R.string.not_available)
-            )
+            binding.tvSmerTezavnost.text = smer.tezavnost?.let {
+                context.getString(R.string.difficulty_label_format, it)
+            } ?: context.getString(R.string.difficulty_label_unavailable)
 
-            binding.tvSmerStil.text = context.getString(
-                R.string.style_label_format,
-                smer.stil ?: context.getString(R.string.not_available)
-            )
+            binding.tvSmerStil.text = smer.stil?.let {
+                context.getString(R.string.style_label_format, it)
+            } ?: context.getString(R.string.style_label_unavailable)
         }
     }
 }
