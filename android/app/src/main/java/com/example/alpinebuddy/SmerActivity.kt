@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import coil.load
 import com.example.alpinebuddy.data.ApiClient
 import com.example.alpinebuddy.data.SmerRead
@@ -32,7 +33,11 @@ class SmerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smer)
 
+        // Toolbar setup
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         smerTitle = findViewById(R.id.smerTitle)
         smerDolzina = findViewById(R.id.smerDolzina)
@@ -81,21 +86,23 @@ class SmerActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.opisTitle).visibility = View.GONE
         }
 
-
+        // --- IMAGE LOADING FIX ---
         val hasSkica1 = !smer.skicaUrl1.isNullOrEmpty()
         val hasSkica2 = !smer.skicaUrl2.isNullOrEmpty()
 
         if (hasSkica1) {
+            val fullSkicaUrl1 = ApiClient.BASE_URL + smer.skicaUrl1
             skicaImage1.visibility = View.VISIBLE
-            skicaImage1.load(smer.skicaUrl1) {
-                placeholder(R.drawable.ic_launcher_background) // Optional placeholder
-                error(R.drawable.ic_launcher_foreground) // Optional error image
+            skicaImage1.load(fullSkicaUrl1) {
+                placeholder(R.drawable.ic_launcher_background)
+                error(R.drawable.ic_launcher_foreground)
             }
         }
 
         if (hasSkica2) {
+            val fullSkicaUrl2 = ApiClient.BASE_URL + smer.skicaUrl2
             skicaImage2.visibility = View.VISIBLE
-            skicaImage2.load(smer.skicaUrl2) {
+            skicaImage2.load(fullSkicaUrl2) {
                 placeholder(R.drawable.ic_launcher_background)
                 error(R.drawable.ic_launcher_foreground)
             }
@@ -109,7 +116,7 @@ class SmerActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)

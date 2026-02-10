@@ -43,9 +43,6 @@ class SmerAdapter(
             binding.tvSmerDolzina.text = "Dolžina: ${smer.dolzina?.toString() ?: "N/A"} m"
             binding.tvSmerTezavnost.text = "Težavnost: ${smer.tezavnost ?: "N/A"}"
             binding.tvSmerStil.text = "Stil: ${smer.stil ?: "N/A"}"
-            binding.btnOdpri.setOnClickListener {
-                // TODO: Handle button click, maybe open details
-            }
         }
     }
 }
