@@ -10,4 +10,28 @@
     <string name="error_empty_fields">Vnesi email in geslo</string>
     <string name="login_success">Prijava uspešna!</string>
     <string name="registration_not_implemented">Registracija še ni implementirana</string>
+
+    <!-- Registration Screen -->
+    <string name="create_account_title">Ustvari račun</string>
+    <string name="name_hint">Ime</string>
+    <string name="password_min_8_chars_hint">Geslo (min. 8 znakov)</string>
+    <string name="register_button">Registracija</string>
+
+    <!-- SmeriActivity -->
+    <string name="smeri_title_text">Smeri</string>
+    <string name="header_image_of_mountain">Slika gore v glavi</string>
+
+    <!-- SmerActivity -->
+    <string name="smer_name_placeholder">Ime Smeri</string>
+    <string name="length_label_format">Dolžina: %1$d m</string>
+    <string name="difficulty_label_format">Težavnost: %1$s</string>
+    <string name="style_label_format">Stil: %1$s</string>
+    <string name="description_label">Opis</string>
+    <string name="description_placeholder">Tukaj pride opis smeri...</string>
+    <string name="sketches_label">Skice</string>
+    <string name="sketch_image_1">Skica smeri 1</string>
+    <string name="sketch_image_2">Skica smeri 2</string>
+    <string name="unknown_name">Neznano ime</string>
+    <string name="not_available">N/A</string>
+    <string name="unknown">neznana</string>
 </resources>

@@ -33,7 +33,6 @@ class SmerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smer)
 
-        // Toolbar setup
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -72,12 +71,15 @@ class SmerActivity : AppCompatActivity() {
     }
 
     private fun displaySmerDetails(smer: SmerRead, tezavnost: TezavnostRead?, stil: StilSmeriRead?) {
-        smerTitle.text = smer.ime ?: "Neznano ime"
-        supportActionBar?.title = smer.ime ?: "Podrobnosti smeri"
+        smerTitle.text = smer.ime ?: getString(R.string.unknown_name)
+        supportActionBar?.title = smer.ime ?: getString(R.string.smeri_title_text)
 
-        smerDolzina.text = "Dolžina: ${smer.dolzina?.toString() ?: "neznana"} m"
-        smerTezavnost.text = "Težavnost: ${tezavnost?.oznaka ?: "neznana"}"
-        smerStil.text = "Stil: ${stil?.naziv ?: "neznan"}"
+        smerDolzina.text = smer.dolzina?.let {
+            getString(R.string.length_label_format, it)
+        } ?: getString(R.string.length_label_format, getString(R.string.unknown))
+
+        smerTezavnost.text = getString(R.string.difficulty_label_format, tezavnost?.oznaka ?: getString(R.string.unknown))
+        smerStil.text = getString(R.string.style_label_format, stil?.naziv ?: getString(R.string.unknown))
 
         smer.opis?.let {
             smerOpis.text = it.replace("\\n", "\n")
@@ -86,7 +88,6 @@ class SmerActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.opisTitle).visibility = View.GONE
         }
 
-        // --- IMAGE LOADING FIX ---
         val hasSkica1 = !smer.skicaUrl1.isNullOrEmpty()
         val hasSkica2 = !smer.skicaUrl2.isNullOrEmpty()
 

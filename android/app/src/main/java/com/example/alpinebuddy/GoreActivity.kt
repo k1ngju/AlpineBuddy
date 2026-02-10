@@ -43,7 +43,7 @@ class GoreActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        goraAdapter = GoraAdapter(emptyList()) { gora ->
+        goraAdapter = GoraAdapter { gora ->
             val intent = Intent(this, SmeriActivity::class.java).apply {
                 putExtra(SmeriActivity.EXTRA_GORA_ID, gora.goraId)
                 putExtra(SmeriActivity.EXTRA_GORA_NAZIV, gora.naziv)
@@ -72,7 +72,7 @@ class GoreActivity : AppCompatActivity() {
 
                 // 3. Prikaži filtrirane gore
                 runOnUiThread {
-                    goraAdapter.updateData(filtriraneGore)
+                    goraAdapter.submitList(filtriraneGore)
                 }
             } catch (e: Exception) {
                 Log.e("GoreActivity", "Napaka pri pridobivanju gora: ", e)

@@ -2,7 +2,10 @@ package com.example.alpinebuddy.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.alpinebuddy.R
 import com.example.alpinebuddy.databinding.ItemSmerBinding
 
 // Podatkovni razred, ki združuje podatke za prikaz
@@ -15,9 +18,8 @@ data class SmerInfo(
 )
 
 class SmerAdapter(
-    private var smeri: List<SmerInfo>,
     private val onItemClicked: (SmerInfo) -> Unit
-) : RecyclerView.Adapter<SmerAdapter.SmerViewHolder>() {
+) : ListAdapter<SmerInfo, SmerAdapter.SmerViewHolder>(SmerInfoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmerViewHolder {
         val binding = ItemSmerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,24 +27,40 @@ class SmerAdapter(
     }
 
     override fun onBindViewHolder(holder: SmerViewHolder, position: Int) {
-        val smer = smeri[position]
+        val smer = getItem(position)
         holder.bind(smer)
         holder.itemView.setOnClickListener { onItemClicked(smer) }
     }
 
-    override fun getItemCount(): Int = smeri.size
+    class SmerViewHolder(private val binding: ItemSmerBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val context = binding.root.context
 
-    fun updateData(newSmeri: List<SmerInfo>) {
-        smeri = newSmeri
-        notifyDataSetChanged()
+        fun bind(smer: SmerInfo) {
+            binding.tvSmerIme.text = smer.ime ?: context.getString(R.string.unknown_name)
+
+            binding.tvSmerDolzina.text = smer.dolzina?.let {
+                context.getString(R.string.length_label_format, it)
+            } ?: context.getString(R.string.length_label_format, context.getString(R.string.not_available))
+
+            binding.tvSmerTezavnost.text = context.getString(
+                R.string.difficulty_label_format,
+                smer.tezavnost ?: context.getString(R.string.not_available)
+            )
+
+            binding.tvSmerStil.text = context.getString(
+                R.string.style_label_format,
+                smer.stil ?: context.getString(R.string.not_available)
+            )
+        }
+    }
+}
+
+class SmerInfoDiffCallback : DiffUtil.ItemCallback<SmerInfo>() {
+    override fun areItemsTheSame(oldItem: SmerInfo, newItem: SmerInfo): Boolean {
+        return oldItem.smerId == newItem.smerId
     }
 
-    class SmerViewHolder(private val binding: ItemSmerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(smer: SmerInfo) {
-            binding.tvSmerIme.text = smer.ime ?: "Neznano ime"
-            binding.tvSmerDolzina.text = "Dolžina: ${smer.dolzina?.toString() ?: "N/A"} m"
-            binding.tvSmerTezavnost.text = "Težavnost: ${smer.tezavnost ?: "N/A"}"
-            binding.tvSmerStil.text = "Stil: ${smer.stil ?: "N/A"}"
-        }
+    override fun areContentsTheSame(oldItem: SmerInfo, newItem: SmerInfo): Boolean {
+        return oldItem == newItem
     }
 }

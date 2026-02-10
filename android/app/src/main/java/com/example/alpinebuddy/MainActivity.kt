@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        gorovjeAdapter = GorovjeAdapter(emptyList()) { gorovje ->
+        gorovjeAdapter = GorovjeAdapter { gorovje ->
             val intent = Intent(this, GoreActivity::class.java).apply {
                 putExtra(GoreActivity.EXTRA_GOROVJE_ID, gorovje.gorovjeId)
                 putExtra(GoreActivity.EXTRA_GOROVJE_NAZIV, gorovje.naziv)
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 val gorovja = ApiClient.apiService.getGorovja()
                 Log.d("MainActivity", "Uspešno pridobljeni podatki: $gorovja")
                 runOnUiThread {
-                    gorovjeAdapter.updateData(gorovja)
+                    gorovjeAdapter.submitList(gorovja)
                 }
             } catch (e: Exception) {
                 Log.e("MainActivity", "Napaka pri pridobivanju podatkov: ", e)

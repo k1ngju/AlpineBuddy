@@ -1,29 +1,30 @@
 package com.example.alpinebuddy.ui.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.alpinebuddy.R
 import com.example.alpinebuddy.data.GorovjeRead
 
 class GorovjeAdapter(
-    private var gorovja: List<GorovjeRead>,
     private val onItemClicked: (GorovjeRead) -> Unit
-) : RecyclerView.Adapter<GorovjeAdapter.GorovjeViewHolder>() {
+) : ListAdapter<GorovjeRead, GorovjeAdapter.GorovjeViewHolder>(GorovjeDiffCallback()) {
 
     // Seznam barv za ozadja
     private val colors = listOf(
-        Color.parseColor("#FF6D6D"), // Rdeča
-        Color.parseColor("#6DA5FF"), // Modra
-        Color.parseColor("#74D68A"), // Zelena
-        Color.parseColor("#FFD966"), // Rumena
-        Color.parseColor("#A56DFF"), // Vijolična
-        Color.parseColor("#FF9E6D")  // Oranžna
+        "#FF6D6D".toColorInt(), // Rdeča
+        "#6DA5FF".toColorInt(), // Modra
+        "#74D68A".toColorInt(), // Zelena
+        "#FFD966".toColorInt(), // Rumena
+        "#A56DFF".toColorInt(), // Vijolična
+        "#FF9E6D".toColorInt()  // Oranžna
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GorovjeViewHolder {
@@ -33,20 +34,12 @@ class GorovjeAdapter(
     }
 
     override fun onBindViewHolder(holder: GorovjeViewHolder, position: Int) {
-        val gorovje = gorovja[position]
-        // Določi barvo glede na pozicijo v seznamu
+        val gorovje = getItem(position)
         val color = colors[position % colors.size]
         holder.bind(gorovje, color)
         holder.itemView.setOnClickListener {
             onItemClicked(gorovje)
         }
-    }
-
-    override fun getItemCount(): Int = gorovja.size
-
-    fun updateData(newGorovja: List<GorovjeRead>) {
-        gorovja = newGorovja
-        notifyDataSetChanged()
     }
 
     class GorovjeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -56,18 +49,26 @@ class GorovjeAdapter(
         fun bind(gorovje: GorovjeRead, color: Int) {
             nazivTextView.text = gorovje.naziv
 
-            // Preverimo, če obstaja URL slike
             if (!gorovje.slikaUrl.isNullOrEmpty()) {
                 imageView.load(gorovje.slikaUrl) {
                     crossfade(true)
                     placeholder(R.drawable.ic_launcher_background)
-                    error(color) // Če nalaganje slike ne uspe, prikaži barvo
+                    error(color)
                 }
             } else {
-                // Če URL-ja ni, direktno nastavimo barvo
                 imageView.setBackgroundColor(color)
-                imageView.setImageDrawable(null) // Odstranimo morebitno prejšnjo sliko
+                imageView.setImageDrawable(null)
             }
         }
+    }
+}
+
+class GorovjeDiffCallback : DiffUtil.ItemCallback<GorovjeRead>() {
+    override fun areItemsTheSame(oldItem: GorovjeRead, newItem: GorovjeRead): Boolean {
+        return oldItem.gorovjeId == newItem.gorovjeId
+    }
+
+    override fun areContentsTheSame(oldItem: GorovjeRead, newItem: GorovjeRead): Boolean {
+        return oldItem == newItem
     }
 }

@@ -27,7 +27,7 @@
                 android:id="@+id/smerTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Ime Smeri"
+                tools:text="@string/smer_name_placeholder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
                         android:id="@+id/smerDolzina"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dolžina: "
+                        tools:text="@string/length_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                     <TextView
@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Težavnost: "
+                        tools:text="@string/difficulty_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                     <TextView
@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Stil: "
+                        tools:text="@string/style_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Opis"
+                android:text="@string/description_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintTop_toBottomOf="@id/infoCard"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -89,7 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Tukaj pride opis smeri..."
+                tools:text="@string/description_placeholder"
                 android:lineSpacingExtra="4dp"
                 app:layout_constraintTop_toBottomOf="@id/opisTitle"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Skice"
+                android:text="@string/sketches_label"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintTop_toBottomOf="@id/smerOpis"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -112,6 +112,7 @@
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
+                android:contentDescription="@string/sketch_image_1"
                 app:layout_constraintTop_toBottomOf="@id/skiceTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,6 +125,7 @@
                 android:layout_marginTop="8dp"
                 android:adjustViewBounds="true"
                 android:visibility="gone"
+                android:contentDescription="@string/sketch_image_2"
                 app:layout_constraintTop_toBottomOf="@id/skicaImage1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

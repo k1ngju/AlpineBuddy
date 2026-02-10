@@ -57,7 +57,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
 
     // Image Loading
-    implementation("io.coil-kt:coil:2.6.0")
+    implementation(libs.coil)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))

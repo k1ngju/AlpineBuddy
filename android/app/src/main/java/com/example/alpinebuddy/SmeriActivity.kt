@@ -41,19 +41,16 @@ class SmeriActivity : AppCompatActivity() {
 
         binding.collapsingToolbar.title = goraNaziv ?: "Smeri"
 
-        // --- IMAGE LOADING FIX ---
         if (!goraSlikaUrl.isNullOrEmpty()) {
             val fullImageUrl = ApiClient.BASE_URL + goraSlikaUrl
             binding.ivGoraHeader.load(fullImageUrl) {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_foreground) // Error placeholder
+                error(R.drawable.ic_launcher_foreground)
             }
         } else {
-            // Če slika nima URL-ja, lahko nastavimo privzeto barvo ali sliko
              binding.ivGoraHeader.setImageResource(R.drawable.ic_launcher_background)
         }
-
 
         setupRecyclerView()
 
@@ -63,7 +60,7 @@ class SmeriActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        smerAdapter = SmerAdapter(emptyList()) { smer ->
+        smerAdapter = SmerAdapter { smer ->
             val intent = Intent(this, SmerActivity::class.java)
             intent.putExtra("SMER_ID", smer.smerId)
             startActivity(intent)
@@ -94,7 +91,7 @@ class SmeriActivity : AppCompatActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    smerAdapter.updateData(smerInfoList)
+                    smerAdapter.submitList(smerInfoList)
                 }
             } catch (e: Exception) {
                 Log.e("SmeriActivity", "Error fetching smeri", e)

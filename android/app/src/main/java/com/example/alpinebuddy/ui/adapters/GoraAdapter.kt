@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.alpinebuddy.R
@@ -12,9 +14,8 @@ import com.example.alpinebuddy.data.ApiClient
 import com.example.alpinebuddy.data.GoraRead
 
 class GoraAdapter(
-    private var gore: List<GoraRead>,
     private val onItemClicked: (GoraRead) -> Unit
-) : RecyclerView.Adapter<GoraAdapter.GoraViewHolder>() {
+) : ListAdapter<GoraRead, GoraAdapter.GoraViewHolder>(GoraDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoraViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,18 +24,11 @@ class GoraAdapter(
     }
 
     override fun onBindViewHolder(holder: GoraViewHolder, position: Int) {
-        val gora = gore[position]
+        val gora = getItem(position)
         holder.bind(gora)
         holder.itemView.setOnClickListener {
             onItemClicked(gora)
         }
-    }
-
-    override fun getItemCount(): Int = gore.size
-
-    fun updateData(newGore: List<GoraRead>) {
-        gore = newGore
-        notifyDataSetChanged()
     }
 
     class GoraViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -55,5 +49,15 @@ class GoraAdapter(
                 imageView.setImageResource(R.drawable.ic_launcher_background)
             }
         }
+    }
+}
+
+class GoraDiffCallback : DiffUtil.ItemCallback<GoraRead>() {
+    override fun areItemsTheSame(oldItem: GoraRead, newItem: GoraRead): Boolean {
+        return oldItem.goraId == newItem.goraId
+    }
+
+    override fun areContentsTheSame(oldItem: GoraRead, newItem: GoraRead): Boolean {
+        return oldItem == newItem
     }
 }
